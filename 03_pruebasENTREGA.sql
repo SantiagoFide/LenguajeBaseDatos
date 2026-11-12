@@ -139,3 +139,56 @@ EXCEPTION
         RAISE;
 END;
 /
+
+select contar_clientes () as total_clientes from dual;
+
+select contar_productos () as total_productos from dual;
+
+select contar_pedidos () as total_pedios from dual;
+
+desc producto;
+
+select nombre as producto, obtener_precio_producto(id_producto)as precio from producto
+where id_producto =2;
+
+desc inventario;
+
+select calcular_total_inventario() as total_inventario from dual;
+
+
+select p.id_producto, p.nombre, i.cantidad_disponible
+from inventario i
+join producto p
+on i.id_producto = p.id_producto;
+
+select p.nombre as nombre_producto, i.cantidad_disponible, clasificacion_inventario(p.id_producto) as clasificacion
+from inventario i
+join producto p
+on i.id_producto = p.id_producto
+where p.id_producto = 3;
+
+
+desc cliente;
+
+var resultado refcursor;
+exec pkg_clientes.buscar_cliente(1, : resultado);
+print resultado;
+
+var resultado refcursor;
+exec pkg_productos.buscar_producto(2, : resultado);
+print resultado;
+
+var resultado refcursor;
+exec pkg_pedidos.buscar_pedido(2, : resultado);
+print resultado;
+
+var resultado refcursor;
+exec pkg_inventarios.buscar_inventarios(1, : resultado);
+print resultado;
+
+
+--insert into movimientoinventario (id_movimiento, id_producto, id_empleado, tipo_movimiento, cantidad, fecha_movimiento, descripcion)
+--values(3, 1, 1, 'Entrada', -5, sysdate, 'Prueba de cantidad negativa');
+
+insert into movimientoinventario (id_movimiento, id_producto, id_empleado, tipo_movimiento, cantidad, fecha_movimiento, descripcion)
+values(4, 1, 1, 'Entrada', 4, sysdate, 'Prueba de cantidad positiva');
